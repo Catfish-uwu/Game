@@ -1,21 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class TowerCreater : MonoBehaviour
+public class TowerCreater : DefaultTrackableEventHandler
 {
     private Vector3 _currentPosition = new Vector3();
 
-    public int _numberOfPinsOnTheBottomLayer = 4;
+    private int _numberOfPinsOnTheBottomLayer = 4;
     public GameObject pin;
     public GameObject parent;
 
     private float _pinSpacingY;
     private float _pinSpacingZ;
 
+    public InputField inputField;
 
-    void Start()
+    public void OnClickStart()
     {
+        try
+        {
+            _numberOfPinsOnTheBottomLayer = int.Parse(inputField.text);
+        }
+        catch
+        {
+            Debug.Log(inputField.text + " is not number");
+        }
+    }
+
+    protected override void OnTrackingFound()
+    {
+        base.OnTrackingFound();
         if (!parent.activeSelf) return;
         var scales = pin.transform.localScale;
         _pinSpacingY = scales.y * 2;
